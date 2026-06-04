@@ -8,6 +8,20 @@
       "when": 1780518193804,
       "tag": "0000_milky_carnage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780569069816,
+      "tag": "0001_breezy_prodigy",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780570564063,
+      "tag": "0002_faulty_azazel",
+      "breakpoints": true
     }
   ]
 }
