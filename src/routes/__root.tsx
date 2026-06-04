@@ -6,6 +6,7 @@ import { ui } from "@clerk/ui"
 import { shadcn } from "@clerk/ui/themes"
 
 import appCss from "@/styles.css?url"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -64,7 +65,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ClerkProvider ui={ui} appearance={{ theme: shadcn }}>
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </ClerkProvider>
         <TanStackDevtools
           config={{

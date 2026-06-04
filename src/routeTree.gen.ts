@@ -13,6 +13,9 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard/reports'
+import { Route as DashboardIncomeRouteImport } from './routes/dashboard/income'
+import { Route as DashboardExpensesRouteImport } from './routes/dashboard/expenses'
 import { Route as authSignUpSplatRouteImport } from './routes/(auth)/sign-up.$'
 import { Route as authSignInSplatRouteImport } from './routes/(auth)/sign-in.$'
 
@@ -35,6 +38,21 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardIncomeRoute = DashboardIncomeRouteImport.update({
+  id: '/income',
+  path: '/income',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardExpensesRoute = DashboardExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const authSignUpSplatRoute = authSignUpSplatRouteImport.update({
   id: '/sign-up/$',
   path: '/sign-up/$',
@@ -49,12 +67,18 @@ const authSignInSplatRoute = authSignInSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/expenses': typeof DashboardExpensesRoute
+  '/dashboard/income': typeof DashboardIncomeRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/sign-in/$': typeof authSignInSplatRoute
   '/sign-up/$': typeof authSignUpSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/expenses': typeof DashboardExpensesRoute
+  '/dashboard/income': typeof DashboardIncomeRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/sign-in/$': typeof authSignInSplatRoute
   '/sign-up/$': typeof authSignUpSplatRoute
@@ -64,20 +88,41 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/expenses': typeof DashboardExpensesRoute
+  '/dashboard/income': typeof DashboardIncomeRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/sign-in/$': typeof authSignInSplatRoute
   '/(auth)/sign-up/$': typeof authSignUpSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/dashboard/' | '/sign-in/$' | '/sign-up/$'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/dashboard/expenses'
+    | '/dashboard/income'
+    | '/dashboard/reports'
+    | '/dashboard/'
+    | '/sign-in/$'
+    | '/sign-up/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/sign-in/$' | '/sign-up/$'
+  to:
+    | '/'
+    | '/dashboard/expenses'
+    | '/dashboard/income'
+    | '/dashboard/reports'
+    | '/dashboard'
+    | '/sign-in/$'
+    | '/sign-up/$'
   id:
     | '__root__'
     | '/'
     | '/(auth)'
     | '/dashboard'
+    | '/dashboard/expenses'
+    | '/dashboard/income'
+    | '/dashboard/reports'
     | '/dashboard/'
     | '/(auth)/sign-in/$'
     | '/(auth)/sign-up/$'
@@ -119,6 +164,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/income': {
+      id: '/dashboard/income'
+      path: '/income'
+      fullPath: '/dashboard/income'
+      preLoaderRoute: typeof DashboardIncomeRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/expenses': {
+      id: '/dashboard/expenses'
+      path: '/expenses'
+      fullPath: '/dashboard/expenses'
+      preLoaderRoute: typeof DashboardExpensesRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/(auth)/sign-up/$': {
       id: '/(auth)/sign-up/$'
       path: '/sign-up/$'
@@ -151,10 +217,16 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface DashboardRouteRouteChildren {
+  DashboardExpensesRoute: typeof DashboardExpensesRoute
+  DashboardIncomeRoute: typeof DashboardIncomeRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardExpensesRoute: DashboardExpensesRoute,
+  DashboardIncomeRoute: DashboardIncomeRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
