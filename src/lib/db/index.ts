@@ -1,6 +1,7 @@
 import postgres from "postgres"
 import { drizzle } from "drizzle-orm/postgres-js"
 import { serverEnv } from "@/lib/env/server"
+import { expenses } from "./schemas/expenses"
 
 const caCert = serverEnv.DATABASE_CA_CERT.replace(/\\n/g, "\n")
 
@@ -15,4 +16,6 @@ const client = postgres({
   password: serverEnv.DATABASE_PASSWORD,
   database: serverEnv.DATABASE_NAME,
 })
-export const db = drizzle({ client })
+export const db = drizzle(client, {
+  schema: { expenses },
+})
