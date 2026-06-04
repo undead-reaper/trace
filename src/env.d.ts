@@ -18,6 +18,12 @@ declare global {
       readonly CLERK_SIGN_UP_URL: string
       readonly CLERK_AFTER_SIGN_IN_URL: string
       readonly CLERK_AFTER_SIGN_UP_URL: string
+      readonly DATABASE_HOST: string
+      readonly DATABASE_PORT: string
+      readonly DATABASE_NAME: string
+      readonly DATABASE_USER: string
+      readonly DATABASE_PASSWORD: string
+      readonly DATABASE_CA_CERT: string
     }
   }
 }
