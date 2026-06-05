@@ -42,3 +42,5 @@ export const income = pgTable(
     index("idx_income_user_date").on(t.date, t.userId),
   ]
 ).enableRLS()
+
+export type Income = typeof income.$inferSelect

@@ -1,7 +1,7 @@
 import { incomeCategories } from "@/lib/db/schemas/income"
 import z from "zod"
 
-export const createIncomeSchema = z.object({
+export const addIncomeSchema = z.object({
   source: z.string().trim().min(1, "Source is required"),
   category: z.enum(incomeCategories.enumValues),
   amount: z
@@ -11,3 +11,5 @@ export const createIncomeSchema = z.object({
   date: z.date().default(new Date()),
   description: z.string().trim().optional(),
 })
+
+export type AddIncomeData = z.input<typeof addIncomeSchema>

@@ -1,14 +1,13 @@
 import { requireAuthFunction } from "@/features/auth/middlewares/requireAuth"
 import { createServerFn } from "@tanstack/react-start"
-import { createIncomeSchema } from "@/features/transactions/schemas/createIncomeSchema"
-import z from "zod"
 import { db } from "@/lib/db"
 import { income } from "@/lib/db/schemas/income"
 import { and, eq } from "drizzle-orm"
+import { updateIncomeSchema } from "@/features/transactions/schemas/updateIncomeSchema"
 
 export const updateIncome = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(createIncomeSchema.partial().extend({ incomeId: z.nanoid() }))
+  .inputValidator(updateIncomeSchema)
   .handler(async ({ data, context }) => {
     const { incomeId, ...updatePayload } = data
     if (Object.keys(updatePayload).length === 0) {

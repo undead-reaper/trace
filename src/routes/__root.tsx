@@ -1,14 +1,26 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
+import {
+  HeadContent,
+  Scripts,
+  createRootRouteWithContext,
+} from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ClerkProvider } from "@clerk/tanstack-react-start"
 import { ui } from "@clerk/ui"
 import { shadcn } from "@clerk/ui/themes"
+import { formDevtoolsPlugin } from "@tanstack/react-form-devtools"
 
 import appCss from "@/styles.css?url"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
+import type { QueryClient } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
-export const Route = createRootRoute({
+type RootRouteContext = {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RootRouteContext>()({
   head: () => ({
     meta: [
       {
@@ -65,7 +77,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ClerkProvider ui={ui} appearance={{ theme: shadcn }}>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <Toaster richColors duration={2000} />
+            {children}
+          </TooltipProvider>
         </ClerkProvider>
         <TanStackDevtools
           config={{
@@ -76,7 +91,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
             },
+            formDevtoolsPlugin(),
           ]}
+        />
+        <ReactQueryDevtools
+          buttonPosition="bottom-left"
+          initialIsOpen={false}
         />
         <Scripts />
       </body>
