@@ -1,26 +1,24 @@
-import AddIncomeButton from "@/features/transactions/components/AddIncomeButton"
-import { IncomeColumns } from "@/features/transactions/tables/IncomeTables"
-import DataTable from "@/features/dashboard/components/DataTable"
-import { useState, useTransition } from "react"
-import { useGetAllIncomesQuery } from "@/features/transactions/hooks/useGetAllIncomesQuery"
+import AddExpenseButton from "@/features/transactions/components/AddExpenseButton"
+import { useDeleteExpenseMutation } from "@/features/transactions/hooks/useDeleteExpenseMutation"
+import { useGetAllExpensesQuery } from "@/features/transactions/hooks/useGetAllExpensesQuery"
 import { getRouteApi } from "@tanstack/react-router"
-import { useDeleteIncomeMutation } from "@/features/transactions/hooks/useDeleteIncomeMutation"
+import { useState, useTransition } from "react"
+import { useDeleteManyExpensesMutation } from "@/features/transactions/hooks/useDeleteManyExpensesMutation"
 import { toast } from "sonner"
+import DataTable from "@/features/dashboard/components/DataTable"
+import { ExpenseColumns } from "@/features/transactions/tables/ExpenseTables"
 import ConfirmDialog from "@/components/ConfirmDialog"
-import UpdateIncomeDialog from "@/features/transactions/components/UpdateIncomeDialog"
-import { useDeleteManyIncomeMutation } from "@/features/transactions/hooks/useDeleteManyIncomeMutation"
+import UpdateExpenseDialog from "@/features/transactions/components/UpdateExpenseDialog"
 import { useQueryClient } from "@tanstack/react-query"
-import { getAllIncomesOptions } from "@/features/transactions/queryOptions/getAllIncomesOptions"
+import { getAllExpensesOptions } from "@/features/transactions/queryOptions/getAllExpensesOptions"
 
-const IncomeView = () => {
-  const routeApi = getRouteApi("/dashboard/income")
+const ExpensesView = () => {
+  const routeApi = getRouteApi("/dashboard/expenses")
   const { page = 1 } = routeApi.useSearch()
-
   const [isPending, startTransition] = useTransition()
-  const { data } = useGetAllIncomesQuery({ page })
-  const deleteIncomeMutation = useDeleteIncomeMutation()
-  const deleteManyIncomeMutation = useDeleteManyIncomeMutation()
-  const queryClient = useQueryClient()
+  const { data } = useGetAllExpensesQuery({ page })
+  const deleteExpenseMutation = useDeleteExpenseMutation()
+  const deleteManyExpensesMutation = useDeleteManyExpensesMutation()
 
   const [deleteSelectedConfig, setDeleteSelectedConfig] = useState<{
     ids: string[]
@@ -28,19 +26,20 @@ const IncomeView = () => {
   } | null>(null)
   const [idToDelete, setIdToDelete] = useState<string | null>(null)
   const [idToUpdate, setIdToUpdate] = useState<string | null>(null)
+  const queryClient = useQueryClient()
 
   const handleDelete = (id: string) => {
-    deleteIncomeMutation.mutate(
-      { data: { incomeId: id } },
+    deleteExpenseMutation.mutate(
+      { data: { expenseId: id } },
       {
         onSuccess: () => {
-          toast.success("Income Entry Deleted", {
-            description: "Your income entry has been successfully deleted.",
+          toast.success("Expense Entry Deleted", {
+            description: "Your expense entry has been successfully deleted.",
           })
           setIdToDelete(null)
         },
         onError: (error) => {
-          toast.error("Failed to Delete Income Entry", {
+          toast.error("Failed to Delete Expense Entry", {
             description: error.message,
           })
         },
@@ -50,19 +49,19 @@ const IncomeView = () => {
 
   const handleDeleteSelected = () => {
     if (!deleteSelectedConfig) return
-    deleteManyIncomeMutation.mutate(
+    deleteManyExpensesMutation.mutate(
       { ids: deleteSelectedConfig.ids },
       {
         onSuccess: () => {
-          toast.success("Income Entries Deleted", {
+          toast.success("Expense Entries Deleted", {
             description:
-              "Your selected income entries have been successfully deleted.",
+              "Your selected expense entries have been successfully deleted.",
           })
           deleteSelectedConfig.clearSelection()
           setDeleteSelectedConfig(null)
         },
         onError: (error) => {
-          toast.error("Failed to Delete Income Entries", {
+          toast.error("Failed to Delete Expense Entries", {
             description: error.message,
           })
         },
@@ -77,8 +76,8 @@ const IncomeView = () => {
         onOpenChange={(isOpen) => {
           if (!isOpen) setIdToDelete(null)
         }}
-        title="Delete Income Entry"
-        description="Are you sure you want to delete the income entry? This action is not reversible"
+        title="Delete Expense Entry"
+        description="Are you sure you want to delete the expense entry? This action is not reversible"
         confirmLabel="Delete"
         cancelLabel="Cancel"
         onConfirm={() => {
@@ -86,8 +85,8 @@ const IncomeView = () => {
         }}
       />
       {idToUpdate && (
-        <UpdateIncomeDialog
-          incomeId={idToUpdate}
+        <UpdateExpenseDialog
+          expenseId={idToUpdate}
           open={!!idToUpdate}
           onOpenChange={(isOpen) => {
             if (!isOpen) setIdToUpdate(null)
@@ -108,16 +107,16 @@ const IncomeView = () => {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 pt-10">
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div className="flex flex-col gap-1">
-            <h1 className="font-noto-serif text-5xl font-bold">Income</h1>
+            <h1 className="font-noto-serif text-5xl font-bold">Expenses</h1>
             <p className="text-sm text-muted-foreground">
-              Manage your income sources and track your earnings.
+              Manage your expense categories and track your spending.
             </p>
           </div>
-          <AddIncomeButton />
+          <AddExpenseButton />
         </div>
         <DataTable
           data={data.items}
-          columns={IncomeColumns}
+          columns={ExpenseColumns}
           page={page}
           totalPages={data.totalPages}
           isPending={isPending}
@@ -128,22 +127,22 @@ const IncomeView = () => {
             setDeleteSelectedConfig({ ids, clearSelection })
           }}
           getRowId={(row) => row.id}
-          searchColumn="source"
+          searchColumn="merchant"
           nextPrefetch={() => {
-            queryClient.prefetchQuery(getAllIncomesOptions({ page: page + 1 }))
+            queryClient.prefetchQuery(getAllExpensesOptions({ page: page + 1 }))
           }}
           nextLoader={{
-            to: "/dashboard/income",
+            to: "/dashboard/expenses",
             search: (prev) => ({
               ...prev,
               page: page + 1,
             }),
           }}
           previousPrefetch={() => {
-            queryClient.prefetchQuery(getAllIncomesOptions({ page: page - 1 }))
+            queryClient.prefetchQuery(getAllExpensesOptions({ page: page - 1 }))
           }}
           previousLoader={{
-            to: "/dashboard/income",
+            to: "/dashboard/expenses",
             search: (prev) => ({
               ...prev,
               page: Math.max(page - 1, 1),
@@ -155,4 +154,4 @@ const IncomeView = () => {
   )
 }
 
-export default IncomeView
+export default ExpensesView

@@ -1,12 +1,12 @@
 import { requireAuthFunction } from "@/features/auth/middlewares/requireAuth"
 import { createServerFn } from "@tanstack/react-start"
-import { createExpenseSchema } from "@/features/transactions/schemas/createExpenseSchema"
+import { addExpenseSchema } from "@/features/transactions/schemas/addExpenseSchema"
 import { db } from "@/lib/db"
 import { expenses } from "@/lib/db/schemas/expenses"
 
-export const createExpense = createServerFn()
+export const addExpense = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(createExpenseSchema)
+  .inputValidator(addExpenseSchema)
   .handler(async ({ data, context }) => {
     const [newExpense] = await db
       .insert(expenses)

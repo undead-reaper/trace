@@ -1,6 +1,6 @@
 import { requireAuthFunction } from "@/features/auth/middlewares/requireAuth"
 import { createServerFn } from "@tanstack/react-start"
-import { createExpenseSchema } from "@/features/transactions/schemas/createExpenseSchema"
+import { addExpenseSchema } from "@/features/transactions/schemas/addExpenseSchema"
 import z from "zod"
 import { db } from "@/lib/db"
 import { expenses } from "@/lib/db/schemas/expenses"
@@ -8,9 +8,7 @@ import { and, eq } from "drizzle-orm"
 
 export const updateExpense = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(
-    createExpenseSchema.partial().extend({ expenseId: z.nanoid() })
-  )
+  .inputValidator(addExpenseSchema.partial().extend({ expenseId: z.nanoid() }))
   .handler(async ({ data, context }) => {
     const { expenseId, ...updatePayload } = data
     if (Object.keys(updatePayload).length === 0) {

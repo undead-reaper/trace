@@ -58,3 +58,5 @@ export const expenses = pgTable(
     index("idx_expenses_user_date").on(t.date, t.userId),
   ]
 ).enableRLS()
+
+export type Expense = typeof expenses.$inferSelect

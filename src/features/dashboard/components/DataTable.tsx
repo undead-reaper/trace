@@ -29,11 +29,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useQueryClient } from "@tanstack/react-query"
-import { getAllIncomesOptions } from "@/features/transactions/queryOptions/getAllIncomesOptions"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "@tanstack/react-router"
 import { TrashIcon } from "lucide-react"
+import type { NavigateOptions } from "@tanstack/react-router"
 
 interface Props<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -46,6 +45,11 @@ interface Props<TData, TValue> {
   onDelete: (id: string) => void
   onDeleteSelected: (ids: string[], clearSelection: () => void) => void
   getRowId?: (originalRow: TData) => string
+  searchColumn: string
+  nextLoader: NavigateOptions
+  previousLoader: NavigateOptions
+  nextPrefetch: () => void
+  previousPrefetch: () => void
 }
 
 const DataTable = <TData, TValue>({
@@ -59,12 +63,16 @@ const DataTable = <TData, TValue>({
   onDelete,
   onDeleteSelected,
   getRowId,
+  searchColumn,
+  nextLoader,
+  previousLoader,
+  nextPrefetch,
+  previousPrefetch,
 }: Props<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   const table = useReactTable({
@@ -106,10 +114,10 @@ const DataTable = <TData, TValue>({
             placeholder="Filter Items..."
             className="max-w-sm"
             value={
-              (table.getColumn("source")?.getFilterValue() ?? "") as string
+              (table.getColumn(searchColumn)?.getFilterValue() ?? "") as string
             }
             onChange={(e) =>
-              table.getColumn("source")?.setFilterValue(e.target.value)
+              table.getColumn(searchColumn)?.setFilterValue(e.target.value)
             }
           />
 
@@ -221,20 +229,12 @@ const DataTable = <TData, TValue>({
           size="sm"
           onClick={() => {
             startTransition(() => {
-              navigate({
-                to: "/dashboard/income",
-                search: (prev) => ({
-                  ...prev,
-                  page: Math.max(page - 1, 1),
-                }),
-              })
+              navigate(previousLoader)
             })
           }}
           onMouseEnter={() => {
             if (page > 1) {
-              queryClient.prefetchQuery(
-                getAllIncomesOptions({ page: page - 1 })
-              )
+              previousPrefetch()
             }
           }}
           disabled={page === 1 || isPending}
@@ -246,23 +246,15 @@ const DataTable = <TData, TValue>({
           size="sm"
           onClick={() => {
             startTransition(() => {
-              navigate({
-                to: "/dashboard/income",
-                search: (prev) => ({
-                  ...prev,
-                  page: page + 1,
-                }),
-              })
+              navigate(nextLoader)
             })
           }}
           onMouseEnter={() => {
             if (page < totalPages) {
-              queryClient.prefetchQuery(
-                getAllIncomesOptions({ page: page + 1 })
-              )
+              nextPrefetch()
             }
           }}
-          disabled={page === totalPages || isPending}
+          disabled={page >= totalPages || isPending}
         >
           Next
         </Button>

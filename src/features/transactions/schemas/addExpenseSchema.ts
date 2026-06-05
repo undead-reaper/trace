@@ -1,7 +1,7 @@
 import { expenseCategories } from "@/lib/db/schemas/expenses"
 import z from "zod"
 
-export const createExpenseSchema = z.object({
+export const addExpenseSchema = z.object({
   merchant: z.string().trim().min(1, "Merchant name is required"),
   category: z.enum(expenseCategories.enumValues),
   amount: z
@@ -11,3 +11,5 @@ export const createExpenseSchema = z.object({
   date: z.date().default(() => new Date()),
   description: z.string().trim().optional(),
 })
+
+export type AddExpenseData = z.input<typeof addExpenseSchema>

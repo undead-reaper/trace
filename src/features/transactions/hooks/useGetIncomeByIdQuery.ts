@@ -20,5 +20,15 @@ export const useGetIncomeByIdQuery = ({ incomeId }: GetIncomeByIdData) => {
       }
       return undefined
     },
+    initialDataUpdatedAt: () => {
+      const allStates = queryClient.getQueriesData<{ items: Income[] }>({
+        queryKey: getAllIncomesBaseOptions.queryKey,
+      })
+      return Math.max(
+        ...allStates.map(
+          ([key]) => queryClient.getQueryState(key)?.dataUpdatedAt ?? 0
+        )
+      )
+    },
   })
 }
