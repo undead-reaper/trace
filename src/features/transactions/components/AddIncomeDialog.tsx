@@ -9,7 +9,7 @@ type Props = Readonly<{
 const AddIncomeDialog = ({ onOpenChange, open }: Props) => {
   return (
     <ResponsiveModal
-      title="Create New Income"
+      title="Add New Income"
       open={open}
       onOpenChange={onOpenChange}
     >

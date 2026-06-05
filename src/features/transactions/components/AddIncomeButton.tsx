@@ -11,7 +11,7 @@ const AddIncomeButton = () => {
       <AddIncomeDialog open={dialogOpen} onOpenChange={setDialogOpen} />
       <Button onClick={() => setDialogOpen(true)} className="w-min">
         <PlusIcon />
-        <span>Create Income</span>
+        <span>Add Income</span>
       </Button>
     </>
   )

@@ -8,6 +8,7 @@ import { useDeleteIncomeMutation } from "@/features/transactions/hooks/useDelete
 import { toast } from "sonner"
 import ConfirmDialog from "@/components/ConfirmDialog"
 import UpdateIncomeDialog from "@/features/transactions/components/UpdateIncomeDialog"
+import { useDeleteManyIncomeMutation } from "@/features/transactions/hooks/useDeleteManyIncomeMutation"
 
 const IncomeView = () => {
   const routeApi = getRouteApi("/dashboard/income")
@@ -16,7 +17,12 @@ const IncomeView = () => {
   const [isPending, startTransition] = useTransition()
   const { data } = useGetAllIncomesQuery({ page })
   const deleteIncomeMutation = useDeleteIncomeMutation()
+  const deleteManyIncomeMutation = useDeleteManyIncomeMutation()
 
+  const [deleteSelectedConfig, setDeleteSelectedConfig] = useState<{
+    ids: string[]
+    clearSelection: () => void
+  } | null>(null)
   const [idToDelete, setIdToDelete] = useState<string | null>(null)
   const [idToUpdate, setIdToUpdate] = useState<string | null>(null)
 
@@ -39,6 +45,28 @@ const IncomeView = () => {
     )
   }
 
+  const handleDeleteSelected = () => {
+    if (!deleteSelectedConfig) return
+    deleteManyIncomeMutation.mutate(
+      { ids: deleteSelectedConfig.ids },
+      {
+        onSuccess: () => {
+          toast.success("Income Entries Deleted", {
+            description:
+              "Your selected income entries have been successfully deleted.",
+          })
+          deleteSelectedConfig.clearSelection()
+          setDeleteSelectedConfig(null)
+        },
+        onError: (error) => {
+          toast.error("Failed to Delete Income Entries", {
+            description: error.message,
+          })
+        },
+      }
+    )
+  }
+
   return (
     <>
       <ConfirmDialog
@@ -54,7 +82,6 @@ const IncomeView = () => {
           if (idToDelete) handleDelete(idToDelete)
         }}
       />
-
       {idToUpdate && (
         <UpdateIncomeDialog
           incomeId={idToUpdate}
@@ -64,8 +91,18 @@ const IncomeView = () => {
           }}
         />
       )}
-
-      <div className="flex flex-col gap-6 px-6 pt-10">
+      <ConfirmDialog
+        open={!!deleteSelectedConfig}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setDeleteSelectedConfig(null)
+        }}
+        title="Delete Multiple Entries"
+        description={`Are you sure you want to delete ${deleteSelectedConfig?.ids.length ?? 0} entries? This action is not reversible.`}
+        confirmLabel="Delete All"
+        cancelLabel="Cancel"
+        onConfirm={handleDeleteSelected}
+      />
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 pt-10">
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div className="flex flex-col gap-1">
             <h1 className="font-noto-serif text-5xl font-bold">Income</h1>
@@ -84,6 +121,10 @@ const IncomeView = () => {
           startTransition={startTransition}
           onDelete={setIdToDelete}
           onUpdate={setIdToUpdate}
+          onDeleteSelected={(ids, clearSelection) => {
+            setDeleteSelectedConfig({ ids, clearSelection })
+          }}
+          getRowId={(row) => row.id}
         />
       </div>
     </>

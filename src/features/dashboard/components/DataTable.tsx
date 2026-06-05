@@ -33,6 +33,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getAllIncomesOptions } from "@/features/transactions/queryOptions/getAllIncomesOptions"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "@tanstack/react-router"
+import { TrashIcon } from "lucide-react"
 
 interface Props<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -43,6 +44,8 @@ interface Props<TData, TValue> {
   startTransition: (callback: () => void) => void
   onUpdate: (id: string) => void
   onDelete: (id: string) => void
+  onDeleteSelected: (ids: string[], clearSelection: () => void) => void
+  getRowId?: (originalRow: TData) => string
 }
 
 const DataTable = <TData, TValue>({
@@ -54,6 +57,8 @@ const DataTable = <TData, TValue>({
   startTransition,
   onUpdate,
   onDelete,
+  onDeleteSelected,
+  getRowId,
 }: Props<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -65,6 +70,7 @@ const DataTable = <TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    getRowId,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -85,45 +91,83 @@ const DataTable = <TData, TValue>({
     },
   })
 
+  const handleDeleteSelected = () => {
+    const selectedIds = table
+      .getFilteredSelectedRowModel()
+      .rows.map((row) => row.id)
+    onDeleteSelected(selectedIds, () => table.setRowSelection({}))
+  }
+
   return (
     <div>
-      <div className="flex items-center gap-2 py-4">
-        <Input
-          placeholder="Filter Items..."
-          className="max-w-sm"
-          value={(table.getColumn("source")?.getFilterValue() ?? "") as string}
-          onChange={(e) =>
-            table.getColumn("source")?.setFilterValue(e.target.value)
-          }
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={<Button variant="outline" className="ml-auto" />}
-          >
-            Columns
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="overflow-hidden rounded-lg border">
+      {table.getFilteredSelectedRowModel().rows.length === 0 ? (
+        <div className="flex items-center justify-between gap-2 py-4">
+          <Input
+            placeholder="Filter Items..."
+            className="max-w-sm"
+            value={
+              (table.getColumn("source")?.getFilterValue() ?? "") as string
+            }
+            onChange={(e) =>
+              table.getColumn("source")?.setFilterValue(e.target.value)
+            }
+          />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className="hidden md:flex"
+              render={<Button variant="outline" className="ml-auto" />}
+            >
+              Columns
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className="flex flex-row items-center justify-between py-4">
+          <div className="flex items-center gap-2 p-2">
+            <span className="text-xs font-medium">
+              {table.getFilteredSelectedRowModel().rows.length} row(s) selected
+            </span>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => table.setRowSelection({})}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteSelected}
+              size="sm"
+              variant="destructive"
+            >
+              <TrashIcon />
+              <span>Delete Selected</span>
+            </Button>
+          </div>
+        </div>
+      )}
+      <div className="rounded-lg border">
         <Table className={cn(isPending && "pointer-events-none animate-pulse")}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

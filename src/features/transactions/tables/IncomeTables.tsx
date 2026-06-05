@@ -50,7 +50,7 @@ export const IncomeColumns: ColumnDef<Income>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => format(row.original.date, "PPP"),
+    cell: ({ row }) => format(row.original.date, "MMM dd, yyyy"),
   },
   {
     accessorKey: "source",
@@ -74,13 +74,15 @@ export const IncomeColumns: ColumnDef<Income>[] = [
     accessorFn: (row) => parseFloat(row.amount),
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Amount
-          <ArrowUpDownIcon className="ml-2 size-4" />
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Amount
+            <ArrowUpDownIcon className="ml-2 size-4" />
+          </Button>
+        </div>
       )
     },
     cell: ({ row }) => {
@@ -89,7 +91,7 @@ export const IncomeColumns: ColumnDef<Income>[] = [
         style: "currency",
         currency: "USD",
       }).format(parse)
-      return <div className="font-medium">{formatted}</div>
+      return <div className="text-right font-medium">{formatted}</div>
     },
   },
   {
