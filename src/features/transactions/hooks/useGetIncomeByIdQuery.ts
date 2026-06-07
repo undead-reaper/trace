@@ -1,7 +1,7 @@
 import type { GetIncomeByIdData } from "@/features/transactions/schemas/getIncomeByIdSchema"
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { getIncomeByIdOptions } from "@/features/transactions/queryOptions/getIncomeByIdOptions"
-import { getAllIncomesBaseOptions } from "../queryOptions/getAllIncomesOptions"
+import { getAllIncomesBaseOptions } from "@/features/transactions/queryOptions/getAllIncomesOptions"
 import type { Income } from "@/lib/db/schemas/income"
 
 export const useGetIncomeByIdQuery = ({ incomeId }: GetIncomeByIdData) => {

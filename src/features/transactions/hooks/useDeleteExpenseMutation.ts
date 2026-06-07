@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteExpenseOptions } from "@/features/transactions/queryOptions/deleteExpenseOptions"
-import { getAllExpensesBaseOptions } from "../queryOptions/getAllExpensesOptions"
+import { getAllExpensesBaseOptions } from "@/features/transactions/queryOptions/getAllExpensesOptions"
 import { getDashboardStatsOptions } from "@/features/dashboard/queryOptions/getDashboardStatsOptions"
 import { getRecentTransactionOptions } from "@/features/dashboard/queryOptions/getRecentTransactionsOptions"
 import { getCashflowDataBaseOptions } from "@/features/dashboard/queryOptions/getCashflowDataOptions"
+import { getCategoryBreakdownBaseOptions } from "@/features/dashboard/queryOptions/getCategoryBreakdown"
+import { getReportsStatsBaseOptions } from "@/features/dashboard/queryOptions/getReportsStatsOptions"
 
 export const useDeleteExpenseMutation = () => {
   const queryClient = useQueryClient()
@@ -14,6 +16,8 @@ export const useDeleteExpenseMutation = () => {
       queryClient.invalidateQueries(getDashboardStatsOptions)
       queryClient.invalidateQueries(getRecentTransactionOptions)
       queryClient.invalidateQueries(getCashflowDataBaseOptions)
+      queryClient.invalidateQueries(getCategoryBreakdownBaseOptions)
+      queryClient.invalidateQueries(getReportsStatsBaseOptions)
     },
   })
 }

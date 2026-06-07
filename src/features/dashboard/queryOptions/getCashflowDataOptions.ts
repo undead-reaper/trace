@@ -8,7 +8,7 @@ export const getCashflowDataBaseOptions = queryOptions({
 
 export const getCashflowDataOptions = ({ timeFrame }: GetCashflowDataType) =>
   queryOptions({
-    queryKey: [getCashflowDataBaseOptions.queryKey, { timeFrame }],
+    queryKey: [...getCashflowDataBaseOptions.queryKey, { timeFrame }],
     queryFn: async () => {
       return await getCashflowData({ data: { timeFrame } })
     },

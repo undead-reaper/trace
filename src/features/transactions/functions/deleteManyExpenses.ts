@@ -1,6 +1,6 @@
 import { requireAuthFunction } from "@/features/auth/middlewares/requireAuth"
 import { createServerFn } from "@tanstack/react-start"
-import { deleteManyExpensesSchema } from "../schemas/deleteManyExpensesSchema"
+import { deleteManyExpensesSchema } from "@/features/transactions/schemas/deleteManyExpensesSchema"
 import { db } from "@/lib/db"
 import { expenses } from "@/lib/db/schemas/expenses"
 import { and, eq, inArray } from "drizzle-orm"

@@ -9,7 +9,7 @@ import type { MonthlyData } from "@/features/dashboard/schemas/monthlyDataSchema
 import type { ChartData } from "@/features/dashboard/schemas/chartDataSchema"
 import { getDateRange } from "@/lib/utils"
 import { getCashflowDataSchema } from "@/features/dashboard/schemas/getCashflowDataSchema"
-import { TimeFrameData } from "../schemas/timeFrameSchema"
+import { TimeFrameData } from "@/features/dashboard/schemas/timeFrameSchema"
 
 export const getCashflowData = createServerFn()
   .middleware([requireAuthFunction])

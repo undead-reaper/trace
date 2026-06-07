@@ -16,6 +16,7 @@ const client = postgres({
   user: serverEnv.DATABASE_USER,
   password: serverEnv.DATABASE_PASSWORD,
   database: serverEnv.DATABASE_NAME,
+  prepare: false,
 })
 export const db = drizzle(client, {
   schema: { expenses, income },

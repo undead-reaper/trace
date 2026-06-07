@@ -138,6 +138,7 @@ const IncomeView = () => {
               ...prev,
               page: page + 1,
             }),
+            resetScroll: false,
           }}
           previousPrefetch={() => {
             queryClient.prefetchQuery(getAllIncomesOptions({ page: page - 1 }))
@@ -148,6 +149,7 @@ const IncomeView = () => {
               ...prev,
               page: Math.max(page - 1, 1),
             }),
+            resetScroll: false,
           }}
         />
       </div>

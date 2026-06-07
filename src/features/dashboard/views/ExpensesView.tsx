@@ -106,7 +106,7 @@ const ExpensesView = () => {
       />
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-10">
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <h1 className="font-noto-serif text-5xl font-bold">Expenses</h1>
             <p className="text-sm text-muted-foreground">
               Manage your expense categories and track your spending.
@@ -137,6 +137,7 @@ const ExpensesView = () => {
               ...prev,
               page: page + 1,
             }),
+            resetScroll: false,
           }}
           previousPrefetch={() => {
             queryClient.prefetchQuery(getAllExpensesOptions({ page: page - 1 }))
@@ -147,6 +148,7 @@ const ExpensesView = () => {
               ...prev,
               page: Math.max(page - 1, 1),
             }),
+            resetScroll: false,
           }}
         />
       </div>

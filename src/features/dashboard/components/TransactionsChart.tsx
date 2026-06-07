@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select"
 import { useGetCashflowDataQuery } from "@/features/dashboard/hooks/useGetCashflowDataQuery"
 import { useQueryClient } from "@tanstack/react-query"
-import { getCashflowDataOptions } from "../queryOptions/getCashflowDataOptions"
+import { getCashflowDataOptions } from "@/features/dashboard/queryOptions/getCashflowDataOptions"
 
 const chartConfig: ChartConfig = {
   income: {

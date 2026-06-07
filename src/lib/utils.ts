@@ -1,8 +1,9 @@
 import type { DateRange } from "@/features/dashboard/schemas/dateRangeSchema"
+import type { DateRangeSearch } from "@/features/dashboard/schemas/dateRangeSearchSchema"
 import type { TimeFrame } from "@/features/dashboard/schemas/timeFrameSchema"
 import { clsx } from "clsx"
 import type { ClassValue } from "clsx"
-import { startOfMonth, subMonths } from "date-fns"
+import { endOfMonth, formatDate, startOfMonth, subMonths } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -27,3 +28,25 @@ export const getDateRange = (timeFrame: TimeFrame): DateRange => {
       return { startDate: startOfMonth(subMonths(now, 12)), endDate: now }
   }
 }
+
+export const serializeDateRange = (dateRange: DateRangeSearch) => {
+  const now = new Date()
+  const startDate = dateRange.startDate
+    ? new Date(dateRange.startDate)
+    : startOfMonth(now)
+  const endDate = dateRange.endDate
+    ? new Date(dateRange.endDate)
+    : endOfMonth(now)
+  return { startDate, endDate }
+}
+
+export const deserializeDateRange = (dateRange: {
+  startDate: Date
+  endDate: Date
+}) => {
+  const startDate = dateRange.startDate.toDateString()
+  const endDate = dateRange.endDate.toDateString()
+  return { startDate, endDate }
+}
+
+export const dateFormat = (date: Date) => formatDate(date, "LLL dd, y")

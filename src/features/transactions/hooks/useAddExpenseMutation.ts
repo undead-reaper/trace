@@ -4,6 +4,8 @@ import { getAllExpensesBaseOptions } from "@/features/transactions/queryOptions/
 import { getDashboardStatsOptions } from "@/features/dashboard/queryOptions/getDashboardStatsOptions"
 import { getRecentTransactionOptions } from "@/features/dashboard/queryOptions/getRecentTransactionsOptions"
 import { getCashflowDataBaseOptions } from "@/features/dashboard/queryOptions/getCashflowDataOptions"
+import { getCategoryBreakdownBaseOptions } from "@/features/dashboard/queryOptions/getCategoryBreakdown"
+import { getReportsStatsBaseOptions } from "@/features/dashboard/queryOptions/getReportsStatsOptions"
 
 export const useAddExpenseMutation = () => {
   const queryClient = useQueryClient()
@@ -14,6 +16,8 @@ export const useAddExpenseMutation = () => {
       queryClient.invalidateQueries(getDashboardStatsOptions)
       queryClient.invalidateQueries(getRecentTransactionOptions)
       queryClient.invalidateQueries(getCashflowDataBaseOptions)
+      queryClient.invalidateQueries(getCategoryBreakdownBaseOptions)
+      queryClient.invalidateQueries(getReportsStatsBaseOptions)
     },
   })
 }
