@@ -28,6 +28,7 @@ type Props = Readonly<{
   onSubmit: (values: AddExpenseData) => void
   isPending: boolean
   onCancel: () => void
+  descriptionPlaceholder?: string
 }>
 
 const BaseExpenseForm = ({
@@ -35,6 +36,7 @@ const BaseExpenseForm = ({
   isPending,
   onCancel,
   onSubmit,
+  descriptionPlaceholder = "Received a bonus for Q2 performance.",
 }: Props) => {
   const form = useForm({
     defaultValues: initialValues,
@@ -209,7 +211,7 @@ const BaseExpenseForm = ({
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}
-                placeholder="Received a bonus for Q2 performance."
+                placeholder={descriptionPlaceholder}
                 autoComplete="off"
               />
               {isInvalid && <FieldError errors={field.state.meta.errors} />}

@@ -104,7 +104,7 @@ const ExpensesView = () => {
         cancelLabel="Cancel"
         onConfirm={handleDeleteSelected}
       />
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 pt-10">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-10">
         <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div className="flex flex-col gap-1">
             <h1 className="font-noto-serif text-5xl font-bold">Expenses</h1>

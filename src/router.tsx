@@ -7,7 +7,7 @@ export function getRouter() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 30_000,
+        staleTime: 5 * 60 * 1000,
       },
     },
   })
@@ -17,7 +17,7 @@ export function getRouter() {
     defaultNotFoundComponent: () => <div>Not Found</div>,
     scrollRestoration: true,
     defaultPreload: "intent",
-    defaultPreloadStaleTime: 30_000,
+    defaultPreloadStaleTime: 5 * 60 * 1000,
   })
 
   setupRouterSsrQueryIntegration({
@@ -26,7 +26,7 @@ export function getRouter() {
     hydrateOptions: {
       defaultOptions: {
         queries: {
-          gcTime: 5 * 60 * 1000,
+          gcTime: 10 * 60 * 1000,
         },
       },
     },

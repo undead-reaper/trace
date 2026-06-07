@@ -2,6 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { DeleteManyExpensesData } from "@/features/transactions/schemas/deleteManyExpensesSchema"
 import { deleteManyExpenses } from "@/features/transactions/functions/deleteManyExpenses"
 import { getAllExpensesBaseOptions } from "@/features/transactions/queryOptions/getAllExpensesOptions"
+import { getDashboardStatsOptions } from "@/features/dashboard/queryOptions/getDashboardStatsOptions"
+import { getRecentTransactionOptions } from "@/features/dashboard/queryOptions/getRecentTransactionsOptions"
+import { getCashflowDataBaseOptions } from "@/features/dashboard/queryOptions/getCashflowDataOptions"
 
 export const useDeleteManyExpensesMutation = () => {
   const queryClient = useQueryClient()
@@ -11,6 +14,9 @@ export const useDeleteManyExpensesMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(getAllExpensesBaseOptions)
+      queryClient.invalidateQueries(getDashboardStatsOptions)
+      queryClient.invalidateQueries(getRecentTransactionOptions)
+      queryClient.invalidateQueries(getCashflowDataBaseOptions)
     },
   })
 }

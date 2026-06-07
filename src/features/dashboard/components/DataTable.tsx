@@ -22,7 +22,7 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -98,6 +98,16 @@ const DataTable = <TData, TValue>({
       onDelete: (id) => onDelete(id),
     },
   })
+
+  useEffect(() => {
+    if (page > 1) {
+      previousPrefetch()
+    }
+
+    if (page < totalPages) {
+      nextPrefetch()
+    }
+  }, [page, totalPages, previousPrefetch, nextPrefetch])
 
   const handleDeleteSelected = () => {
     const selectedIds = table

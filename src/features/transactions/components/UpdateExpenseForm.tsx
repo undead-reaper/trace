@@ -46,6 +46,7 @@ const UpdateExpenseForm = ({ expenseId, onChange }: Props) => {
       onSubmit={handleSubmit}
       isPending={updateExpenseMutation.isPending}
       onCancel={() => onChange(false)}
+      descriptionPlaceholder="Dinner with Client"
     />
   )
 }
