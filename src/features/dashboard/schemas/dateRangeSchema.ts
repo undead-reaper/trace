@@ -1,7 +1,7 @@
 import z from "zod"
 
 export const dateRangeSchema = z.object({
-  startDate: z.date().nullable(),
+  startDate: z.date(),
   endDate: z.date(),
 })
 

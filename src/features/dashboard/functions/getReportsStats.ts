@@ -12,12 +12,12 @@ export const getReportsStats = createServerFn({ method: "GET" })
   .handler(async ({ context, data }) => {
     const incomeWhereFilter = and(
       eq(income.userId, context.userId),
-      data.startDate ? gte(income.date, data.startDate) : undefined,
+      gte(income.date, data.startDate),
       lte(income.date, data.endDate)
     )
     const expensesWhereFilter = and(
       eq(expenses.userId, context.userId),
-      data.startDate ? gte(expenses.date, data.startDate) : undefined,
+      gte(expenses.date, data.startDate),
       lte(expenses.date, data.endDate)
     )
 
