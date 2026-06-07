@@ -6,7 +6,7 @@ import { income } from "@/lib/db/schemas/income"
 
 export const addIncome = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(addIncomeSchema)
+  .validator(addIncomeSchema)
   .handler(async ({ data, context }) => {
     const [newIncome] = await db
       .insert(income)

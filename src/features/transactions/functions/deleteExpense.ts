@@ -7,7 +7,7 @@ import { and, eq } from "drizzle-orm"
 
 export const deleteExpense = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(deleteExpenseSchema)
+  .validator(deleteExpenseSchema)
   .handler(async ({ data, context }) => {
     const returnedRows = await db
       .delete(expenses)

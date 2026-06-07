@@ -8,7 +8,7 @@ import { expenses } from "@/lib/db/schemas/expenses"
 
 export const getReportsStats = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(dateRangeSchema)
+  .validator(dateRangeSchema)
   .handler(async ({ context, data }) => {
     const incomeWhereFilter = and(
       eq(income.userId, context.userId),

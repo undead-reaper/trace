@@ -7,7 +7,7 @@ import { getAllIncomesSchema } from "@/features/transactions/schemas/getAllIncom
 
 export const getAllIncome = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(getAllIncomesSchema)
+  .validator(getAllIncomesSchema)
   .handler(async ({ context, data }) => {
     const incomeList = await db.query.income.findMany({
       where: eq(income.userId, context.userId),

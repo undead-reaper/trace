@@ -6,7 +6,7 @@ import { expenses } from "@/lib/db/schemas/expenses"
 
 export const addExpense = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(addExpenseSchema)
+  .validator(addExpenseSchema)
   .handler(async ({ data, context }) => {
     const [newExpense] = await db
       .insert(expenses)

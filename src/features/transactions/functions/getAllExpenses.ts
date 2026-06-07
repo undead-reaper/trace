@@ -7,7 +7,7 @@ import { getAllExpensesSchema } from "@/features/transactions/schemas/getAllExpe
 
 export const getAllExpenses = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(getAllExpensesSchema)
+  .validator(getAllExpensesSchema)
   .handler(async ({ context, data }) => {
     const expenseList = await db.query.expenses.findMany({
       where: eq(expenses.userId, context.userId),

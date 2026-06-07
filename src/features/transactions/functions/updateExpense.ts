@@ -8,7 +8,7 @@ import { and, eq } from "drizzle-orm"
 
 export const updateExpense = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(addExpenseSchema.partial().extend({ expenseId: z.nanoid() }))
+  .validator(addExpenseSchema.partial().extend({ expenseId: z.nanoid() }))
   .handler(async ({ data, context }) => {
     const { expenseId, ...updatePayload } = data
     if (Object.keys(updatePayload).length === 0) {

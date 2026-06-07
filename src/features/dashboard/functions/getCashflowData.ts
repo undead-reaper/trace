@@ -13,7 +13,7 @@ import { TimeFrameData } from "@/features/dashboard/schemas/timeFrameSchema"
 
 export const getCashflowData = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(getCashflowDataSchema)
+  .validator(getCashflowDataSchema)
   .handler(async ({ context, data }) => {
     const { startDate, endDate } = getDateRange(data.timeFrame)
     const months = TimeFrameData[data.timeFrame].months
@@ -22,7 +22,7 @@ export const getCashflowData = createServerFn({ method: "GET" })
       db.query.income.findMany({
         where: and(
           eq(income.userId, context.userId),
-          startDate ? gte(income.date, startDate) : undefined,
+          gte(income.date, startDate),
           lte(income.date, endDate)
         ),
       }),
@@ -30,7 +30,7 @@ export const getCashflowData = createServerFn({ method: "GET" })
       db.query.expenses.findMany({
         where: and(
           eq(expenses.userId, context.userId),
-          startDate ? gte(expenses.date, startDate) : undefined,
+          gte(expenses.date, startDate),
           lte(expenses.date, endDate)
         ),
       }),

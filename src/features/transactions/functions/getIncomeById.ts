@@ -7,7 +7,7 @@ import { income } from "@/lib/db/schemas/income"
 
 export const getIncomeById = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(getIncomeByIdSchema)
+  .validator(getIncomeByIdSchema)
   .handler(async ({ data, context }) => {
     const incomeData = await db.query.income.findFirst({
       where: and(

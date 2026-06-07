@@ -7,7 +7,7 @@ import { and, eq, inArray } from "drizzle-orm"
 
 export const deleteManyExpenses = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(deleteManyExpensesSchema)
+  .validator(deleteManyExpensesSchema)
   .handler(async ({ data, context }) => {
     const deletedExpenses = await db
       .delete(expenses)

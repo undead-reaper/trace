@@ -7,7 +7,7 @@ import { expenses } from "@/lib/db/schemas/expenses"
 
 export const getExpenseById = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(getExpenseByIdSchema)
+  .validator(getExpenseByIdSchema)
   .handler(async ({ data, context }) => {
     const expenseData = await db.query.expenses.findFirst({
       where: and(

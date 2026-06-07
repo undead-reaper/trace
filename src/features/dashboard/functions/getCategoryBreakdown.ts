@@ -9,7 +9,7 @@ import type { CategoryBreakdown } from "@/features/dashboard/schemas/categoryBre
 
 export const getCategoryBreakdown = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(dateRangeSchema)
+  .validator(dateRangeSchema)
   .handler(async ({ context, data }) => {
     const expensesWhereFilter = and(
       eq(expenses.userId, context.userId),

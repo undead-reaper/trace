@@ -7,7 +7,7 @@ import { income } from "@/lib/db/schemas/income"
 
 export const deleteIncome = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(deleteIncomeSchema)
+  .validator(deleteIncomeSchema)
   .handler(async ({ data, context }) => {
     const returnedRows = await db
       .delete(income)

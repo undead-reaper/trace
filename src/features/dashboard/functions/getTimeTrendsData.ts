@@ -11,7 +11,7 @@ import { dateRangeSchema } from "@/features/dashboard/schemas/dateRangeSchema"
 
 export const getTimeTrendsData = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
-  .inputValidator(dateRangeSchema)
+  .validator(dateRangeSchema)
   .handler(async ({ context, data }) => {
     const { startDate, endDate } = data
     const months = differenceInMonths(endDate, startDate) + 1

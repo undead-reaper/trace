@@ -7,7 +7,7 @@ import { updateIncomeSchema } from "@/features/transactions/schemas/updateIncome
 
 export const updateIncome = createServerFn()
   .middleware([requireAuthFunction])
-  .inputValidator(updateIncomeSchema)
+  .validator(updateIncomeSchema)
   .handler(async ({ data, context }) => {
     const { incomeId, ...updatePayload } = data
     if (Object.keys(updatePayload).length === 0) {
