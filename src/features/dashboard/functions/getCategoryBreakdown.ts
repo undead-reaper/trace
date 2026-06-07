@@ -7,7 +7,7 @@ import { expenses } from "@/lib/db/schemas/expenses"
 import { income } from "@/lib/db/schemas/income"
 import type { CategoryBreakdown } from "@/features/dashboard/schemas/categoryBreakdownSchema"
 
-export const getCategoryBreakdown = createServerFn()
+export const getCategoryBreakdown = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(dateRangeSchema)
   .handler(async ({ context, data }) => {

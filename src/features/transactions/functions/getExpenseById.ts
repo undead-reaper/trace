@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 import { and, eq } from "drizzle-orm"
 import { expenses } from "@/lib/db/schemas/expenses"
 
-export const getExpenseById = createServerFn()
+export const getExpenseById = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(getExpenseByIdSchema)
   .handler(async ({ data, context }) => {

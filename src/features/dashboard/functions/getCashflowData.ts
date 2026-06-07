@@ -11,7 +11,7 @@ import { getDateRange } from "@/lib/utils"
 import { getCashflowDataSchema } from "@/features/dashboard/schemas/getCashflowDataSchema"
 import { TimeFrameData } from "@/features/dashboard/schemas/timeFrameSchema"
 
-export const getCashflowData = createServerFn()
+export const getCashflowData = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(getCashflowDataSchema)
   .handler(async ({ context, data }) => {

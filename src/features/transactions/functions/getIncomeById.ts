@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 import { and, eq } from "drizzle-orm"
 import { income } from "@/lib/db/schemas/income"
 
-export const getIncomeById = createServerFn()
+export const getIncomeById = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(getIncomeByIdSchema)
   .handler(async ({ data, context }) => {

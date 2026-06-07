@@ -5,7 +5,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { count, desc, eq } from "drizzle-orm"
 import { getAllExpensesSchema } from "@/features/transactions/schemas/getAllExpensesSchema"
 
-export const getAllExpenses = createServerFn()
+export const getAllExpenses = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(getAllExpensesSchema)
   .handler(async ({ context, data }) => {

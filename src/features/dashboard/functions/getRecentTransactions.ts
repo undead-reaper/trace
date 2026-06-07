@@ -6,7 +6,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { desc, eq } from "drizzle-orm"
 import type { Transaction } from "@/features/dashboard/types/transaction"
 
-export const getRecentTransactions = createServerFn()
+export const getRecentTransactions = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .handler(async ({ context }) => {
     const [recentIncome, recentExpenses] = await Promise.all([

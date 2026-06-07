@@ -1,6 +1,7 @@
 import { auth } from "@clerk/tanstack-react-start/server"
 import { redirect } from "@tanstack/react-router"
 import { createMiddleware, createServerFn } from "@tanstack/react-start"
+import { setResponseHeader } from "@tanstack/react-start/server"
 
 export const requireAuth = createServerFn().handler(async () => {
   const { isAuthenticated, userId } = await auth()
@@ -14,6 +15,10 @@ export const requireAuth = createServerFn().handler(async () => {
 export const requireAuthFunction = createMiddleware({
   type: "function",
 }).server(async ({ next }) => {
+  setResponseHeader(
+    "Cache-Control",
+    "private, no-cache, no-store, must-revalidate"
+  )
   const { isAuthenticated, userId } = await auth()
   if (!isAuthenticated) {
     throw redirect({ to: "/sign-in/$" })

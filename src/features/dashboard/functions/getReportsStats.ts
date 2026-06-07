@@ -6,7 +6,7 @@ import { and, eq, gte, lte, sum } from "drizzle-orm"
 import { dateRangeSchema } from "@/features/dashboard/schemas/dateRangeSchema"
 import { expenses } from "@/lib/db/schemas/expenses"
 
-export const getReportsStats = createServerFn()
+export const getReportsStats = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .inputValidator(dateRangeSchema)
   .handler(async ({ context, data }) => {

@@ -6,7 +6,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { startOfMonth } from "date-fns"
 import { and, desc, eq, gte, sum } from "drizzle-orm"
 
-export const getDashboardStats = createServerFn()
+export const getDashboardStats = createServerFn({ method: "GET" })
   .middleware([requireAuthFunction])
   .handler(async ({ context }) => {
     const [
