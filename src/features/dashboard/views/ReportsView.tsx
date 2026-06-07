@@ -5,6 +5,7 @@ import { useGetCategoryBreakdownQuery } from "@/features/dashboard/hooks/useGetC
 import { serializeDateRange } from "@/lib/utils"
 import { getRouteApi } from "@tanstack/react-router"
 import DateRangePicker from "@/features/dashboard/components/DateRangePicker"
+import TrendBarCard from "@/features/dashboard/components/TrendBarCard"
 
 const ReportsView = () => {
   const routeApi = getRouteApi("/dashboard/reports")
@@ -31,6 +32,7 @@ const ReportsView = () => {
         <IncomeBreakdownCard incomes={data.income} />
         <ExpensesBreakdownCard expenses={data.expenses} />
       </div>
+      <TrendBarCard timeFrame={{ startDate, endDate }} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { getCategoryBreakdownOptions } from "@/features/dashboard/queryOptions/getCategoryBreakdown"
 import { getReportsStatsOptions } from "@/features/dashboard/queryOptions/getReportsStatsOptions"
+import { getTimeTrendsDataOptions } from "@/features/dashboard/queryOptions/getTimeTrendsDataOptions"
 import { dateRangeSearchSchema } from "@/features/dashboard/schemas/dateRangeSearchSchema"
 import ReportsView from "@/features/dashboard/views/ReportsView"
 import { serializeDateRange } from "@/lib/utils"
@@ -21,6 +22,12 @@ export const Route = createFileRoute("/dashboard/reports")({
     )
     await context.queryClient.ensureQueryData(
       getCategoryBreakdownOptions({
+        startDate: startDate,
+        endDate: endDate,
+      })
+    )
+    await context.queryClient.ensureQueryData(
+      getTimeTrendsDataOptions({
         startDate: startDate,
         endDate: endDate,
       })
