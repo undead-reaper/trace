@@ -24,6 +24,7 @@ declare global {
       readonly DATABASE_USER: string
       readonly DATABASE_PASSWORD: string
       readonly DATABASE_CA_CERT: string
+      readonly RAILPACK_BUILD_CMD: string
     }
   }
 }

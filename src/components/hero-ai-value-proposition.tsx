@@ -63,7 +63,8 @@ export const HeroAiValueProposition = () => {
           <div className="mx-auto flex max-w-7xl flex-col justify-center gap-5 border-x p-10">
             <TimelineAnimation
               once={true}
-              as="button"
+              as="a"
+              href="/sign-in"
               animationNum={4}
               timelineRef={timelineRef}
               className="mx-auto w-fit cursor-pointer rounded-full border-4 border-muted-foreground bg-background px-10 py-4 text-base font-bold text-foreground shadow-2xl transition-all duration-300 hover:bg-foreground hover:text-background"

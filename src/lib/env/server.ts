@@ -14,6 +14,7 @@ export const serverEnv = createEnv({
     DATABASE_USER: z.string(),
     DATABASE_PASSWORD: z.string(),
     DATABASE_CA_CERT: z.string(),
+    RAILPACK_BUILD_CMD: z.string(),
   },
   runtimeEnvStrict: process.env,
   emptyStringAsUndefined: true,
