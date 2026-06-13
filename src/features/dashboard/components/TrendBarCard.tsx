@@ -5,21 +5,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { useGetTimeTrendsDataQuery } from "@/features/dashboard/hooks/useGetTimeTrendsDataQuery"
-import type { DateRange } from "@/features/dashboard/schemas/dateRangeSchema"
 import TimeTrendsChart from "@/features/dashboard/components/TimeTrendsChart"
+import type { ChartData } from "@/features/dashboard/schemas/chartDataSchema"
 
 type Props = Readonly<{
-  timeFrame: DateRange
+  transactions: Array<ChartData>
 }>
 
-const TrendBarCard = ({ timeFrame }: Props) => {
-  const { startDate, endDate } = timeFrame
-  const { data: transactions } = useGetTimeTrendsDataQuery({
-    startDate,
-    endDate,
-  })
-
+const TrendBarCard = ({ transactions }: Props) => {
   return (
     <Card>
       <CardHeader>

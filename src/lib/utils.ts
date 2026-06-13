@@ -5,6 +5,8 @@ import { clsx } from "clsx"
 import type { ClassValue } from "clsx"
 import { endOfMonth, formatDate, startOfMonth, subMonths } from "date-fns"
 import { twMerge } from "tailwind-merge"
+import Papa from "papaparse"
+import { fileSave } from "browser-fs-access"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -50,3 +52,20 @@ export const deserializeDateRange = (dateRange: {
 }
 
 export const dateFormat = (date: Date) => formatDate(date, "LLL dd, y")
+
+type Props<T> = Readonly<{
+  data: Array<T>
+  fileName: string
+}>
+export const exportToCSV = async <T extends Record<string, any>>({
+  data,
+  fileName = "export.csv",
+}: Props<T>) => {
+  const csvContent = Papa.unparse(data)
+  const blob = new Blob([csvContent], { type: "text/csv" })
+  try {
+    await fileSave(blob, { fileName, extensions: [".csv"] })
+  } catch (error) {
+    console.error("Error saving file:", error)
+  }
+}
